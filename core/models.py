@@ -1,14 +1,25 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib import admin
+from django.contrib.gis.db import models as geomodels
 
 
 class State(models.Model):
 
     state_name = models.CharField(max_length=100)
+    abbr = models.CharField(max_length=2)
     fips = models.CharField(max_length=15)
-    geometry = JSONField()
+    mp_geometry = geomodels.MultiPolygonField(null=True)
+    p_geometry = geomodels.PolygonField(null=True)
 
+    @property
+    def geometry(self):
+        if self.mp_geometry and not self.p_geometry:
+            return self.mp_geometry
+        elif self.p_geometry and not self.mp_geometry:
+            return self.p_geometry
+        else:
+            return None
 
 class County(models.Model):
 
@@ -30,6 +41,9 @@ class District(models.Model):
 
     name = models.CharField(max_length=100)
     state = models.ForeignKey(State)
+    type = models.CharField(max_length=100, choices=[['STL', 'state upper'],
+                                                     ['STU', 'state lower'],
+                                                     ['FED', 'congressional']])
     geometry = JSONField()
 
 
