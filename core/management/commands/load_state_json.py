@@ -23,7 +23,7 @@ class Command(BaseCommand):
             new_state.fips = st.fips
             if state['geometry']['type'] == 'Polygon':
                 new_state.p_geometry = json.dumps(state['geometry'])
-            elif state['geometry']['type'] == 'MultiPolgyon':
+            elif state['geometry']['type'] == 'MultiPolygon':
                 new_state.mp_geometry = json.dumps(state['geometry'])
             new_state.state_name = st.name
             new_state.save()
