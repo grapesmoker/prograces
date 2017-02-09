@@ -1,3 +1,6 @@
 django
 django-geojson
 psycopg2
+pyexcel
+pyexcel-ods3
+us
