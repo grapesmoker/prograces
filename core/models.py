@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.contrib import admin
 
 
 class State(models.Model):
@@ -13,6 +14,7 @@ class County(models.Model):
 
     county_name = models.CharField(max_length=200)
     state = models.ForeignKey(State)
+    fips = models.CharField(max_length=15)
     geometry = JSONField()
 
 
@@ -62,3 +64,5 @@ class Contest(models.Model):
     state = models.ForeignKey(State)
     candidates = models.ManyToManyField(Candidate)
     votes = models.ForeignKey(Vote)
+
+admin.site.register([State, County, City, District, Precinct, Candidate, Vote, Contest])
